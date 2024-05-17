@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-do-list</title>
+    <script>
+        function clearInputFieldById(id) {
+    document.getElementById(id).value = '';
+}
+
+  // Function to add a new item to the list
+  function addItem() {
+    const listContainer = document.getElementById('list-container');
+    const template = document.getElementById('list-item-template');
+    const newItem = template.content.cloneNode(true);
+    newItem.querySelector('.item-input').value=document.getElementById('button').value;
+    listContainer.appendChild(newItem);
+    clearInputFieldById('button');
+    document.getElementById("list-title").style.display="";
+  }
+
+  // Event listener for the edit button
+  document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('edit-button')) {
+      const listItem = event.target.closest('.list-item');
+      const inputField = listItem.querySelector('.item-input');
+      inputField.disabled = !inputField.disabled;
+      inputField.focus();
+    }
+  });
+
+  // Event listener for the delete button
+  document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('delete-button')) {
+      const listItem = event.target.closest('.list-item');
+      listItem.remove();
+      if (document.querySelectorAll('.list-item').length === 0) {
+        document.getElementById('list-title').style.display = 'none'; // Hide title if no elements left
+      }
+    }
+  });
+
+  // Adding initial item to the list
+  addItem();
+    </script>
+</head>
+<body>
+        <!-- took reference from bootstrap jumbotron -->
+        <div class="jumbotron">
+        <h1 class="display-4">To Do List</h1>
+      </div>
+
+      
+
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Task" aria-label="Task(s)" aria-describedby="button-addon" id="button">
+        <div class="input-group-append" id="button-addon">
+          <button class="btn btn-success" type="button"  onclick="addItem()">Add</button>
+          <button class="btn btn-danger" type="button" onclick="clearInputFieldById('button')">Clear</button>
+        </div>
+      </div>
+      <h3 id="list-title" style="display: none;">List</h3>
+      <div id="list-container"></div>
+
+<!-- Template for list items -->
+<template id="list-item-template">
+  <div class="list-item">
+    <input type="text" class="item-input" disabled placeholder="Task" aria-label="Task(s)" aria-describedby="button-addon" id="button">
+    <button class="edit-button btn btn-outline-success" type="button">Edit</button>
+    <button class="delete-button btn btn-outline-danger" type="button" onclick="clearInputFieldById('button')">Delete</button>
+  </div>
+</template>
+</body>
+</html>
